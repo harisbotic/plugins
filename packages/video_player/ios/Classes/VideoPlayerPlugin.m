@@ -301,10 +301,6 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
     CGFloat width = size.width;
     CGFloat height = size.height;
 
-    // The player has not yet initialized.
-    if (height == CGSizeZero.height && width == CGSizeZero.width) {
-      return;
-    }
     // The player may be initialized but still needs to determine the duration.
     if ([self duration] == 0) {
       return;
@@ -446,7 +442,7 @@ static inline CGFloat radiansToDegrees(CGFloat radians) {
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
   if ([@"init" isEqualToString:call.method]) {
     // Allow audio playback when the Ring/Silent switch is set to silent
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
+    [AVAudioSession.sharedInstance setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
 
     for (NSNumber* textureId in _players) {
       [_registry unregisterTexture:[textureId unsignedIntegerValue]];
